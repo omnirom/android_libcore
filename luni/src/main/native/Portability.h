@@ -64,9 +64,8 @@ static inline int mincore(void* addr, size_t length, unsigned char* vec) {
 // For statfs(3).
 #include <sys/param.h>
 #include <sys/mount.h>
-#define f_frsize f_bsize // TODO: close enough?
 
-#else
+#else  // defined(__APPLE__)
 
 // Bionic or glibc.
 
@@ -74,6 +73,15 @@ static inline int mincore(void* addr, size_t length, unsigned char* vec) {
 #include <sys/sendfile.h>
 #include <sys/statvfs.h>
 
-#endif
+#endif  // defined(__APPLE__)
+
+#if !defined(__BIONIC__)
+#include <netdb.h>
+#include "../../bionic/libc/dns/include/resolv_netid.h"
+inline int android_getaddrinfofornet(const char *hostname, const char *servname,
+    const struct addrinfo *hints, unsigned /*netid*/, unsigned /*mark*/, struct addrinfo **res) {
+  return getaddrinfo(hostname, servname, hints, res);
+}
+#endif  // !defined(__BIONIC__)
 
 #endif  // PORTABILITY_H_included

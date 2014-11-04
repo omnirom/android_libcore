@@ -16,6 +16,8 @@
 
 package libcore.io;
 
+import android.system.ErrnoException;
+import android.system.StructStat;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
@@ -25,7 +27,7 @@ import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
-import static libcore.io.OsConstants.*;
+import static android.system.OsConstants.*;
 
 public final class IoUtils {
     private static final Random TEMPORARY_DIRECTORY_PRNG = new Random();
