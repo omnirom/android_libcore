@@ -196,16 +196,6 @@ public class JarFile extends ZipFile {
      *             If the file cannot be read.
      */
     public JarFile(File file, boolean verify, int mode) throws IOException {
-        this(file, verify, mode, false);
-    }
-
-    /**
-     * See previous constructor for other parameter definitions.
-     * @param chainCheck
-     *            whether or not to check certificate chain signatures
-     * @hide
-     */
-    public JarFile(File file, boolean verify, int mode, boolean chainCheck) throws IOException {
         super(file, mode);
 
         // Step 1: Scan the central directory for meta entries (MANIFEST.mf
