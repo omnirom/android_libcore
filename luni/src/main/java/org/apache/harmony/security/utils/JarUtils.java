@@ -236,7 +236,7 @@ public class JarUtils {
     }
 
     private static X509Certificate[] createChain(X509Certificate signer,
-            X509Certificate[] candidates) {
+            X509Certificate[] candidates, boolean chainCheck) {
         Principal issuer = signer.getIssuerDN();
 
         // Signer is self-signed
@@ -251,7 +251,7 @@ public class JarUtils {
         X509Certificate subjectCert = signer;
         int count = 1;
         while (true) {
-            issuerCert = findCert(issuer, candidates);
+            issuerCert = findCert(issuer, candidates, chainCheck);
             if (issuerCert == null) {
                 break;
             }

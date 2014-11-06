@@ -149,13 +149,6 @@ class JarVerifier {
     }
 
     /**
-     * Convenience constructor for backward compatibility.
-     */
-    JarVerifier(String name) {
-        this(name, false);
-    }
-
-    /**
      * Constructs and returns a new instance of {@code JarVerifier}.
      *
      * @param name
