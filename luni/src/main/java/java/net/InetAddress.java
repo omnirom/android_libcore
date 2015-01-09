@@ -142,6 +142,18 @@ public class InetAddress implements Serializable {
      */
     public static final InetAddress UNSPECIFIED = new InetAddress(AF_UNSPEC, null, null);
 
+    private static OnConnectInternetHook sOnConnectInternetHook;
+
+    /** @hide */
+    public static interface OnConnectInternetHook {
+        void checkIfOpIsAllowed() throws UnknownHostException;
+    }
+
+    /** @hide */
+    public static void registerHook(OnConnectInternetHook hook) {
+        sOnConnectInternetHook = hook;
+    }
+
     /**
      * Constructs an {@code InetAddress}.
      *
@@ -415,6 +427,10 @@ public class InetAddress implements Serializable {
      */
     private static InetAddress[] lookupHostByName(String host, int netId)
             throws UnknownHostException {
+        if (sOnConnectInternetHook != null) {
+            sOnConnectInternetHook.checkIfOpIsAllowed();
+        }
+
         BlockGuard.getThreadPolicy().onNetwork();
         // Do we have a result cached?
         Object cachedResult = addressCache.get(host, netId);
@@ -801,6 +817,10 @@ public class InetAddress implements Serializable {
     }
 
     private static InetAddress getByAddress(String hostName, byte[] ipAddress, int scopeId) throws UnknownHostException {
+        if (sOnConnectInternetHook != null) {
+            sOnConnectInternetHook.checkIfOpIsAllowed();
+        }
+
         if (ipAddress == null) {
             throw new UnknownHostException("ipAddress == null");
         }
